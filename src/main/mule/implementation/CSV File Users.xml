@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="csvFileUsersMainFlow" doc:id="c990ee27-f842-46b0-9953-183b76cbf700" >
+		<logger level="INFO" doc:name="Before Read System Files" doc:id="416d33d5-8846-4bc2-89dc-8135a6de7ffc" message="Before Read System Files"/>
+		<try doc:name="Try" doc:id="60a1dcc8-4d04-42ff-a416-2ff5354b3d3b" >
+			<file:list doc:name="List User Files" doc:id="dcf8de1e-5d86-4b39-98a0-a6bd880aa6f6" directoryPath="${app.home}/csv-file-users" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1071705e-c10a-4a1e-865e-ec54c65474c3" type="FILE:ILLEGAL_PATH">
+					<ee:transform doc:name="No User Files Found" doc:id="7d8420ce-1c16-4dfd-acb8-7d830be42f56" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "No user files found"
+}]]></ee:set-payload>
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="httpStatus" ><![CDATA[%dw 2.0
+output application/json
+---
+404]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<logger level="INFO" doc:name="After Read System Files" doc:id="7c0e11b9-d7a9-48ff-8116-3a14d712f81e" message="After Read System Files"/>
+		<set-variable value="#[[]]" doc:name="Set Users Array" doc:id="9e541e49-c106-4ea8-8f14-4410cd1541d8" variableName="users"/>
+		<logger level="INFO" doc:name="Before Convert CSV User Files in a Json Response" doc:id="6dc4c12f-50ea-402c-8071-45841093013a" message="Before Convert CSV User Files in a Json Response"/>
+		<foreach doc:name="For Each" doc:id="17109f39-b642-49a8-bcee-002ca99ac3f9" >
+			<ee:transform doc:name="CSV to Json" doc:id="7317ce62-2d3f-4ac8-8569-6227ca590c8a">
+			<ee:message>
+			</ee:message>
+				<ee:variables >
+					<ee:set-variable variableName="users" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.users ++ (payload map ((line, index) -> {
+	"id": line[0],
+	"name": line.name,
+	"age": line.age as Number
+}))]]></ee:set-variable>
+				</ee:variables>
+		</ee:transform>
+		</foreach>
+		<logger level="INFO" doc:name="After Convert CSV User Files in a Json Response" doc:id="fad19a59-12c0-41b2-a384-1221d1f70b7a" message="After Convert CSV User Files in a Json Response"/>
+		<set-payload value="#[vars.users]" doc:name="Set Http Response" doc:id="70d62988-afc5-432e-ad72-7e5a2680b281" />
+	</flow>
+</mule>

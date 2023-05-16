@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="JsonFileUsersFlow" doc:id="8febb329-cb59-4465-9364-df97dd5dcaff" >
+		<ee:transform doc:name="Transform Message" doc:id="be0ad2d3-8856-4b62-b705-7e5a47a277c2" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="fileName" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.fileName as String ++ ".json"]]></ee:set-variable>
+				<ee:set-variable variableName="users" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.users]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<file:write doc:name="Write" doc:id="0ea188fc-b568-4c47-9b06-70cf1aa8152e" path="${app.home}/csv-file-users/test1.txt">
+			<file:content ><![CDATA[#[vars.users]]]></file:content>
+		</file:write>
+	</flow>
+</mule>

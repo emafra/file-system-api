@@ -1,0 +1,5 @@
+apiId: "18694232"
+
+http:
+  port: "8081"
+  basePath: "file-system-api/v1"

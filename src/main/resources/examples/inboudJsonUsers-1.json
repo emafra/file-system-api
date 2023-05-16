@@ -1,0 +1,15 @@
+{
+  "fileName": "dcUsers",
+  "users": [
+    {
+      "id": "f4a17d3b-efb3-44b9-903f-3b9c43121c06",
+      "name": "Clark Kent",
+      "age": 35
+    },
+    {
+      "id": "13b68a79-7b05-4c1d-9e05-6de6261c9583",
+      "name": "Diana Prince",
+      "age": 42
+    }
+  ]
+}

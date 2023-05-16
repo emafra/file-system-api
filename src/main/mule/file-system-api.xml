@@ -129,6 +129,8 @@ output application/json
         <logger level="INFO" doc:name="CSV Users Process Ended" doc:id="d3c02830-8618-477d-a070-1ccc80d53db6" message="CSV Users Process Ended" />
     </flow>
     <flow name="post:\users\json:application\json:file-system-api-config">
-        <flow-ref doc:name="Json File Users Flow" doc:id="06e05d2f-a376-433c-b505-dfdb733f2c22" name="JsonFileUsersFlow"/>
+        <logger level="INFO" doc:name="Starting CSV Users Process" doc:id="f364c073-aee6-43fd-b318-7084da87ab33" message="Starting Json Users Creation" />
+		<flow-ref doc:name="Json File Users Flow" doc:id="06e05d2f-a376-433c-b505-dfdb733f2c22" name="JsonFileUsersFlow"/>
+		<logger level="INFO" doc:name="Json Users Creation Ended" doc:id="a305df5b-f678-4ba8-95c7-1bab3b02200e" message="Json Users Creation Ended"/>
     </flow>
 </mule>

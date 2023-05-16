@@ -6,7 +6,7 @@
 http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
 	<flow name="JsonFileUsersFlow" doc:id="8febb329-cb59-4465-9364-df97dd5dcaff" >
-		<ee:transform doc:name="Transform Message" doc:id="be0ad2d3-8856-4b62-b705-7e5a47a277c2" >
+		<ee:transform doc:name="Creating File Name and Users Variables" doc:id="be0ad2d3-8856-4b62-b705-7e5a47a277c2" >
 			<ee:message >
 			</ee:message>
 			<ee:variables >
@@ -20,8 +20,11 @@ output application/json
 payload.users]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<file:write doc:name="Write" doc:id="0ea188fc-b568-4c47-9b06-70cf1aa8152e" path="${app.home}/csv-file-users/test1.txt">
+		<logger level="INFO" doc:name="Before Write File" doc:id="4580277a-c014-4318-a27d-9d8ce16b50d7" message="Before Write File"/>
+		<file:write doc:name="Write File" doc:id="0ea188fc-b568-4c47-9b06-70cf1aa8152e" path="#[vars.fileName as String]" createParentDirectories="false" config-ref="write_Folder">
 			<file:content ><![CDATA[#[vars.users]]]></file:content>
 		</file:write>
+		<logger level="INFO" doc:name="After Write File" doc:id="ab673633-fb6c-4e7b-b62a-8f911da21202" message="After Write File"/>
+		<set-payload value="Json File Users Sucessfully Created" doc:name="Set Http Response" doc:id="3535a293-c43c-4bdb-bf5e-5865b57fd65b" />
 	</flow>
 </mule>

@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<configuration-properties doc:name="Configuration properties" doc:id="e7c027bc-a36e-4a49-9216-33665b21f7b5" file="properties.yaml" />
 	<global-property doc:name="Global Property" doc:id="1a1b6b71-5ea9-419a-bf7c-ae35a2f4fced" name="env" value="local" />
 	<file:config name="write_Folder" doc:name="File Config" doc:id="b9835de1-b6df-419a-9b70-a6ab61ffe0ec" >
-		<file:connection workingDir="${writeFolde}"/>
+		<file:connection workingDir="${writeFolder}"/>
 	</file:config>
 	<api-gateway:autodiscovery apiId="${apiId}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="ac16aa2f-e1bf-482f-9a36-1b6a0499636c" flowRef="file-system-api-main" />
 </mule>
